@@ -1,0 +1,40 @@
+version: '3.8'
+networks:
+  replica:
+    driver: bridge
+
+services:
+  redis:
+    container_name: redis
+    image: redis:6.2
+    ports:
+      - 6379:6379
+    networks:
+      - replica
+    restart: always
+
+  replica:
+    container_name: replica
+    image: redis:6.2
+    ports:
+      - 6378:6379
+    networks:
+      - replica
+      #즉 docker-compose가 있는 디렉토리 경로에 보면 conf 파일이 있을 건데 이 공간이 redis 컨테이너 안에 bash로 들어가면 저 /user/local/etc/redis 공간과 연결되는 것 즉 sync된다.
+    volumes:
+      - ./conf:/usr/local/etc/redis/
+      # Redis 서버를 실행할 때 사용되는 명령어입니다. 이 명령어는 Redis 서버를 구동하고 지정된 경로의 Redis 설정 파일(redis.conf)을 사용하여 구성
+    command: bash -c "apt-get update && apt-get install vim -y && redis-server /usr/local/etc/redis/redis.conf"
+    restart: always
+
+  #replica2:
+  #  container_name: replica2
+  #  image: redis:6.2
+  #  ports:
+  #    - 6377:6379
+  #  networks:
+  #    - replica
+  #  volumes:
+  #    - ./conf:/usr/local/etc/redis/
+  #  command: redis-server /usr/local/etc/redis/redis.conf
+  #  restart: always

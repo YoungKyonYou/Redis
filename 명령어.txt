@@ -1,0 +1,25 @@
+docker ps
+
+docker-compose -f docker-compose.yaml up -d
+
+docker-compose -f docker-compose.yaml down
+
+docker stop CONTAINER 6fc36fdee6fe
+
+docker run --rm -it -d -p 6379:6379 redis:6.2
+
+docker run -e MYSQL_ROOT_PASSWORD=root -d -p 9090:3306 mysql:8
+
+docker exec -it 4bed402c4dc6 redis-cli
+
+docker-compose exec redis redis-cli
+
+docker exec -it aac63a917ac1 bash
+
+docker inspect <컨테이너 이름 또는 ID>
+
+ docker-compose exec redis redis-cli
+
+[컨테이너 내부 bash에 들어가서 ip 확인]
+hostname -i
+docker exec redis hostname -i
